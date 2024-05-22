@@ -1,12 +1,14 @@
 .card-container {
+  top: 30px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* 카드 사이의 간격 조정 */
+  gap: 20px; /* 변경된 간격 설정 */
 }
 
 .card-item {
-  flex: 0 0 calc(20% - 20px); /* 5열로 표시하기 위한 너비 조정 */
-  max-width: calc(20% - 20px); /* 5열로 표시하기 위한 최대 너비 설정 */
+  flex: 1 0 calc(20% - 40px); /* 간격을 반영하여 너비 계산 */
+  max-width: calc(20% - 20px); /* 간격을 반영하여 최대 너비 설정 */
   box-sizing: border-box;
-  padding: 10px;
+  padding: 20px; /* 간격을 반영하여 내부 패딩 설정 */
+  margin: 10px;
 }

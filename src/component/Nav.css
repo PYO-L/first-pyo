@@ -1,0 +1,92 @@
+.nav {
+  display: flex;
+  justify-content: flex-start;
+  margin-right: 40px;
+}
+
+.title {
+  margin-right: 1000px;
+  margin-top: 0px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #007bff;
+}
+.bookmark {
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+.weather {
+  margin-right: 50px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgba(255, 0, 0, 0.63);
+}
+
+/* 기본 스타일 */
+select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+}
+
+/* 호버 효과 */
+select:hover {
+  border-color: #666;
+}
+
+/* 선택된 상태 */
+select:focus {
+  outline: none;
+  border-color: #007bff; /* 선택된 상태의 테두리 색상 변경 */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* 선택된 상태의 그림자 효과 */
+}
+
+/* 활성화된 상태 */
+select:enabled {
+  cursor: pointer;
+}
+
+/* 비활성화된 상태 */
+select:disabled {
+  opacity: 0.5; /* 비활성화된 상태에서 투명도 조정 */
+}
+
+/* 드롭다운 화살표 색상 */
+select::after {
+  content: '\25BC'; /* 화살표 모양 */
+  position: absolute;
+  top: calc(50% - 0.5em);
+  right: 10px;
+  color: #555; /* 드롭다운 화살표 색상 */
+  pointer-events: none; /* 드롭다운 화살표에 이벤트 적용 제외 */
+}
+
+/* 드롭다운 메뉴 색상 */
+select option {
+  background-color: #fff;
+  color: #333;
+}
+/* 버튼 스타일 */
+button.bookmark {
+  border: none; /* 테두리 제거 */
+  background: none; /* 배경 없음 */
+  cursor: pointer; /* 커서 포인터로 변경 */
+  padding: 10px; /* 내부 패딩 없음 */
+}
+
+/* 아이콘 스타일 */
+button.bookmark img {
+  width: 30px; /* 이미지 너비 조정 */
+  height: 30px; /* 이미지 높이 조정 */
+  vertical-align: middle; /* 이미지 수직 정렬 */
+  transition: transform 0.2s ease; /* 호버 효과 애니메이션 */
+  transform: scale(2);
+}
+
+/* 버튼 호버 효과 */
+button.bookmark:hover img {
+  transform: scale(2.3); /* 이미지 확대 */
+}

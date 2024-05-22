@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import StationCard from './component/StationCard';
-
+import Nav from './component/Nav';
 function App() {
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState([]);
   const [showBookmarks, setShowBookmarks] = useState(true);
   const [bookmarks, setBookmarks] = useState([]);
-  const [userRegion, setUserRegion] = useState('');
-  const [filteredItems, setFilteredItems] = useState([]);
+  const [sidoname, setSidoname] = useState('');
+  const [stationname, setStationname] = useState('');
+  const [stations, setStations] = useState([]);
 
   useEffect(() => {
     // 페이지 로드될 때 로컬 스토리지에서 즐겨찾기 목록을 가져옴
     const storedBookmarks = localStorage.getItem('즐찾');
     if (storedBookmarks) {
-      // 가져온 즐겨찾기 목록을 배열로 변환하여 상태에 설정
       setBookmarks(storedBookmarks.split(','));
     }
     const url =
@@ -24,7 +24,6 @@ function App() {
       .then((data) => {
         console.log(data);
         setItems(data.response.body.items);
-        setFilteredItems(data.response.body.items);
       });
   }, []);
 
@@ -50,57 +49,59 @@ function App() {
   const handleBookmarkClick = () => {
     setShowBookmarks(!showBookmarks);
   };
-
-  const handleRegionChange = (e) => {
-    const region = e.target.value;
-    setUserRegion(region);
-    // 입력한 지역에 해당하는 측정소만 필터링
-    if (region === '') {
-      setFilteredItems(items); // 모든 항목을 표시
-    } else {
-      setFilteredItems(items.filter((item) => item.sidoName === region));
-    }
+  const handleSelectChangeSido = (e) => {
+    const selected = e.target.value;
+    setSidoname(selected);
+    const filteredStations = items
+      .filter((item) => item.sidoName === selected)
+      .map((item) => item.stationName);
+    setStations(filteredStations);
   };
+  const handleSelectChangeStation = (e) => {
+    setStationname(e.target.value);
+  };
+  const uniqueSidos = [...new Set(items.map((item) => item.sidoName))];
+  const filterdSido =
+    sidoname && stationname
+      ? items.filter(
+          (item) =>
+            item.sidoName === sidoname && item.stationName === stationname
+        )
+      : sidoname
+      ? items.filter((item) => item.sidoName === sidoname)
+      : items;
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={userRegion}
-          onChange={handleRegionChange}
-          placeholder="지역을 입력하세요"
-        />
-        <span>. .</span>
-        <button className="bookmark" onClick={handleBookmarkClick}>
-          <img
-            src={process.env.PUBLIC_URL + '/img/북마크.png'}
-            alt="북마크 아이콘"
-            style={{ width: '15px', height: '15px', backgroundColor: 'white' }}
-          />
-        </button>
-      </div>
+    <div className="header">
+      <Nav
+        uniqueSidos={uniqueSidos}
+        items={items}
+        handleBookmarkClick={handleBookmarkClick}
+        handleSelectChangeSido={handleSelectChangeSido}
+        handleSelectChangeStation={handleSelectChangeStation}
+        stations={stations}
+      />
+
       <div className="card-container">
-        {filteredItems &&
-          filteredItems.map((item) => (
-            <div
+        {filterdSido.map((item) => (
+          <div
+            key={item.stationName}
+            className="card-item"
+            style={{
+              display:
+                showBookmarks || bookmarks.includes(item.stationName)
+                  ? 'block'
+                  : 'none',
+            }}
+          >
+            <StationCard
               key={item.stationName}
-              className="card-item"
-              style={{
-                display:
-                  showBookmarks || bookmarks.includes(item.stationName)
-                    ? 'block'
-                    : 'none',
-              }}
-            >
-              <StationCard
-                key={item.stationName}
-                item={item}
-                isChecked={bookmarks.includes(item.stationName)}
-                handleCheck={handleCheck(item)}
-              />
-            </div>
-          ))}
+              item={item}
+              isChecked={bookmarks.includes(item.stationName)}
+              handleCheck={handleCheck(item)}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
